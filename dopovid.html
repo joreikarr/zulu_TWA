@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>Нове замовлення</title>
+  </head>
+  <body>
+
+
+    <div class="contaiter m-5">
+      <h2>Доповідь</h2>
+        <form>
+        <input type="text" id = "subject_name" placeholder="Назва предмету (навчальної дисципліни)" class="form-control">
+        <br>
+        <input type="text" id = "type" placeholder="Тема роботи" class="form-control">
+        <br>
+        <input type="text" id = "pages" placeholder="Оберіть кількість сторінок" class="form-control">
+        <br>
+        <input type="text" id = "unique" placeholder="Вкажіть необхідний рівень унікальності у %" class="form-control">
+        <br>
+        <input type="text" id = "deadline" placeholder="Вкажіть дедлайн" class="form-control">
+        <br>
+        <input type="text" id = "comment" placeholder="Важіть інші деталі замовлення (додаткова інформція)" class="form-control">
+        <br>
+        <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
+        <br>
+</form>
+</div>
+    
+    
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+      let tg = window.Telegram.WebApp; 
+      tg.MainButton.text = "Додати замовлення";
+      let res = document.getElementById('subject_name').value + '*'+
+      document.getElementById('type').value + '*'+
+      document.getElementById('pages').value + '*'+
+      document.getElementById('unique').value + '*'+
+      document.getElementById('deadline').value + '*'+
+      document.getElementById('comment').value + '*'+
+      document.getElementById('price').value;
+      tg.MainButton.show().onClick(function(){
+      tg.sendData(res); 
+        });
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -14,7 +14,7 @@
 
 
     <div class="contaiter m-5">
-      <h2>Контрольна робота</h2>
+      <h2 id = "work_type">Контрольна робота</h2>
         <form>
         <input type="text" id = "subject_name" placeholder="Назва предмету (навчальної дисципліни)" class="form-control">
         <br>
@@ -39,7 +39,8 @@
     <script>
       let tg = window.Telegram.WebApp; 
       tg.MainButton.text = "Додати замовлення";
-      let res = document.getElementById('subject_name').value + '*'+
+      let res = document.getElementById('work_type').value + '*' +
+      document.getElementById('subject_name').value + '*'+
       document.getElementById('type').value + '*'+
       document.getElementById('pages').value + '*'+
       document.getElementById('unique').value + '*'+

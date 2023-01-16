@@ -39,7 +39,9 @@
     <script>
       let tg = window.Telegram.WebApp; 
       tg.MainButton.text = "Додати замовлення";
-      let res = document.getElementById('work_type').value + '*' +
+      
+      tg.MainButton.show().onClick(function(){
+        let res = document.getElementById('work_type').value + '*' +
       document.getElementById('subject_name').value + '*'+
       document.getElementById('type').value + '*'+
       document.getElementById('pages').value + '*'+
@@ -47,7 +49,6 @@
       document.getElementById('deadline').value + '*'+
       document.getElementById('comment').value + '*'+
       document.getElementById('price').value;
-      tg.MainButton.show().onClick(function(){
       tg.sendData(res); 
         });
     </script>

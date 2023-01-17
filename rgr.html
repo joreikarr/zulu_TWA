@@ -15,8 +15,56 @@
 
     <div class="contaiter m-5">
       <h2 id = "work_type">РГР</h2>
-        <form>
-        <input type="text" id = "subject_name" placeholder="Назва предмету (навчальної дисципліни)" class="form-control">
+      <form>
+        <select id = "subject_name" placeholder="Назва предмету (навчальної дисципліни)" class="form-control">
+          <option>Іноземні мови</option>
+          <option>Право</option>
+          <option>Хімія</option>
+          <option>Фізика</option>
+          <option>Програмування/інформатика</option>
+          <option>Психологія</option>
+          <option>Менеджмент</option>
+          <option>Маркетинг</option>
+          <option>Вся математика</option>
+          <option>Філософія/логіка</option>
+          <option>Статистика</option>
+          <option>Вся економіка</option>
+          <option>Фінанси/банківська справа/страхування</option>
+          <option>Біологія/медицина/фармація</option>
+          <option>Бух. облік/оподаткування/аудит</option>
+          <option>Публічне управління та адміністрування</option>
+          <option>Правки в чужу роботу</option>
+          <option>Підвищення унікальності</option>
+          <option>Укр. мова/філологія/зарубіжна література</option>
+          <option>Історія</option>
+          <option>Журналістика</option>
+          <option>Міжнародні відносини/політологія</option>
+          <option>Креслення</option>
+          <option>Астрономія</option>
+          <option>Логістика</option>
+          <option>Харчові технології</option>
+          <option>Військові дисципліни</option>
+          <option>Фізичне виховання/реабілітація</option>
+          <option>Релігія</option>
+          <option>Туризм/географія/готельно-ресторанна справа</option>
+          <option>Екологія/природознавство</option>
+          <option>Геодезія/землеустрій/картографія</option>
+          <option>Геологія/гідравліка/мінерали</option>
+          <option>Соціологія</option>
+          <option>Аграрний профіль</option>
+          <option>Бізнес-плани</option>
+          <option>Музика/мистецтво/культура</option>
+          <option>Теор. механіка/прикладна механіка</option>
+          <option>Електротехніка/теплотехніка/термодинаміка/електродинаміка</option>
+          <option>Електрика/електроніка/схемотехніка</option>
+          <option>Машинобудівні/металургія/будівництва</option>
+          <option>Інші технічні спеціальності</option>
+          <option>Реклама/зв'язки із громадськістю/HR-діяльність</option>
+          <option>Товарознавство</option>
+          <option>Бібліографія/музеєзнавство/видавнича справа'</option>
+          <option>Педагогіка, дошкільна освіта</option>
+
+          </select>
         <br>
         <input type="text" id = "type" placeholder="Тема роботи" class="form-control">
         <br>
@@ -41,8 +89,10 @@
       tg.MainButton.text = "Додати замовлення";
       
       tg.MainButton.show().onClick(function(){
+        var e = document.getElementById("subject_name");
+        var text = e.options[e.selectedIndex].text;
         let res = document.getElementById('work_type').innerHTML + '*' +
-      document.getElementById('subject_name').value + '*'+
+      text + '*'+
       document.getElementById('type').value + '*'+
       document.getElementById('pages').value + '*'+
       document.getElementById('unique').value + '*'+

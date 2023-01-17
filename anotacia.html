@@ -75,11 +75,34 @@
         <br>
         <input type="text" id = "pages" placeholder="Оберіть кількість сторінок" class="form-control">
         <br>
-        <input type="text" id = "unique" placeholder="Вкажіть необхідний рівень унікальності у %" class="form-control">
+        <select id = "unique" placeholder="Вкажіть необхідний рівень унікальності у %" class="form-control">
+          <option>5%</option>
+          <option>10%</option>
+          <option>15%</option>
+          <option>20%</option>
+          <option>25%</option>
+          <option>30%</option>
+          <option>35%</option>
+          <option>40%</option>
+          <option>45%</option>
+          <option>50%</option>
+          <option>55%</option>
+          <option>60%</option>
+          <option>65%</option>
+          <option>70%</option>
+          <option>75%</option>
+          <option>80%</option>
+          <option>85%</option>
+          <option>90%</option>
+          <option>95%</option>
+          <option>100%</option>  
+          </select>
         <br>
         <input type="text" id = "deadline" placeholder="Вкажіть дедлайн" class="form-control">
         <br>
-        <input type="text" id = "comment" placeholder="Важіть інші деталі замовлення (додаткова інформція)" class="form-control">
+        <label>Вкажіть інші деталі замовлення (додаткова інформція)</label>
+        <textarea type="text" id = "comment" class="form-control">
+          </textarea>
         <br>
         <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
         <br>
@@ -102,7 +125,7 @@
       document.getElementById('subject_name').value + '*'+
       document.getElementById('type').value + '*'+
       document.getElementById('pages').value + '*'+
-      document.getElementById('unique').value + '*'+
+      document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text + '*'+
       document.getElementById('deadline').value + '*'+
       document.getElementById('comment').value + '*'+
       document.getElementById('price').value;

@@ -117,6 +117,9 @@
       tg.MainButton.text = "Додати замовлення";
      
       tg.MainButton.show().onClick(function(){
+        var d = new Date(Date.parse(document.getElementById('deadline').value))
+        let date = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+d.getHours() + ":" + d.getMinutes();
         var e = document.getElementById("spec");
         var text = e.options[e.selectedIndex].text;
         let res = document.getElementById('work_type').innerHTML + '*' +
@@ -126,7 +129,7 @@
       document.getElementById('type').value + '*'+
       document.getElementById('pages').value + '*'+
       document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text + '*'+
-      document.getElementById('deadline').value + '*'+
+      date + '*'+
       document.getElementById('comment').value + '*'+
       document.getElementById('price').value;
       tg.sendData(res); 

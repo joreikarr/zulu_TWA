@@ -16,6 +16,8 @@
     <div class="contaiter m-5">
       <h2 id = "work_type">Звіт з практики</h2>
       <form>
+        <input type="text" id = "number" placeholder="Номер замовлення" class="form-control">
+        <br>
         <select id = "subject_name" placeholder="Назва предмету (навчальної дисципліни)" class="form-control">
           <option>Іноземні мови</option>
           <option>Право</option>
@@ -92,6 +94,7 @@
         var e = document.getElementById("subject_name");
         var text = e.options[e.selectedIndex].text;
         let res = document.getElementById('work_type').innerHTML + '*' +
+        document.getElementById('number').value + '*' +
       text + '*'+
       document.getElementById('type').value + '*'+
       document.getElementById('pages').value + '*'+

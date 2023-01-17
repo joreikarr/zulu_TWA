@@ -18,7 +18,7 @@
       <form>
         <input type="text" id = "number" placeholder="Номер замовлення" class="form-control">
         <br>
-        <select id = "subject_name" placeholder="Назва предмету (навчальної дисципліни)" class="form-control">
+        <select id = "spec" placeholder="Спеціалізація" class="form-control">
           <option>Іноземні мови</option>
           <option>Право</option>
           <option>Хімія</option>
@@ -68,6 +68,9 @@
 
           </select>
         <br>
+        <input type="text" id = "subject_name" placeholder="Назва предмету(навчальної дисципліни)" class="form-control">
+
+        <br>
         <input type="text" id = "type" placeholder="Тема роботи" class="form-control">
         <br>
         <input type="text" id = "pages" placeholder="Оберіть кількість сторінок" class="form-control">
@@ -91,11 +94,12 @@
       tg.MainButton.text = "Додати замовлення";
      
       tg.MainButton.show().onClick(function(){
-        var e = document.getElementById("subject_name");
+        var e = document.getElementById("spec");
         var text = e.options[e.selectedIndex].text;
         let res = document.getElementById('work_type').innerHTML + '*' +
         document.getElementById('number').value + '*' +
       text + '*'+
+      document.getElementById('subject_name').value + '*'+
       document.getElementById('type').value + '*'+
       document.getElementById('pages').value + '*'+
       document.getElementById('unique').value + '*'+

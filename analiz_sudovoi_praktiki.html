@@ -89,8 +89,10 @@
       tg.MainButton.text = "Додати замовлення";
       
       tg.MainButton.show().onClick(function(){
+        var e = document.getElementById("ddlViewBy");
+        var text = e.options[e.selectedIndex].text;
         let res = document.getElementById('work_type').innerHTML + '*' +
-      document.getElementById('subject_name').value + '*'+
+      text + '*'+
       document.getElementById('type').value + '*'+
       document.getElementById('pages').value + '*'+
       document.getElementById('unique').value + '*'+

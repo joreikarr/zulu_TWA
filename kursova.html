@@ -118,7 +118,7 @@
      
       tg.MainButton.show().onClick(function(){
         var MyDate = new Date(Date.parse(document.getElementById('deadline').value))
-        let date = ('0' + MyDate.getDate()).slice(-2) + '-'
+        var date = ('0' + MyDate.getDate()).slice(-2) + '-'
              + ('0' + (MyDate.getMonth()+1)).slice(-2) + '-'
              + MyDate.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();;
         var e = document.getElementById("spec");

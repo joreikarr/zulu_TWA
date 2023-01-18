@@ -75,6 +75,7 @@
         <input type="text" id = "pages" placeholder="Оберіть кількість сторінок" class="form-control">
         <br>
         <select id = "unique" placeholder="Вкажіть необхідний рівень унікальності у %" class="form-control">
+          <option>0%</option>  
           <option>5%</option>
           <option>10%</option>
           <option>15%</option>
@@ -97,9 +98,10 @@
           <option>100%</option>  
           </select>
         <br>
+        <label>Введіть дедлайн</label>
         <input type="datetime-local" id = "deadline" class="form-control">
         <br>
-        <label>Вкажіть інші деталі замовлення (додаткова інформція)</label>
+        <label>Вкажіть інші деталі замовлення (додаткова інформація)</label>
         <textarea type="text" id = "comment" class="form-control" style="height: 200px;"></textarea>
         <br>
         <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
@@ -118,7 +120,7 @@
         var d = new Date(Date.parse(document.getElementById('deadline').value))
         let date = ('0' + d.getDate()).slice(-2) + '-'
              + ('0' + (d.getMonth()+1)).slice(-2) + '-'
-             + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();;
+             + d.getFullYear() + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         var e = document.getElementById("spec");
         var text = e.options[e.selectedIndex].text;
         let res = document.getElementById('work_type').innerHTML + '*' +

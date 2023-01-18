@@ -73,9 +73,10 @@
         <br>
         <input type="text" id = "type" placeholder="Тема роботи" class="form-control">
         <br>
+        <label>Введіть дедлайн</label>
         <input type="datetime-local" id = "deadline" class="form-control">
         <br>
-        <label>Вкажіть інші деталі замовлення (додаткова інформція)</label>
+        <label>Вкажіть інші деталі замовлення (додаткова інформація)</label>
         <textarea type="text" id = "comment" class="form-control" style="height: 200px;"></textarea>
         <br>
         
@@ -97,7 +98,7 @@
         var d = new Date(Date.parse(document.getElementById('deadline').value))
         let date = ('0' + d.getDate()).slice(-2) + '-'
              + ('0' + (d.getMonth()+1)).slice(-2) + '-'
-             + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();;
+             + d.getFullYear() + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         var e = document.getElementById("spec");
         var text = e.options[e.selectedIndex].text;
         let res = document.getElementById('work_type').innerHTML + '*' +

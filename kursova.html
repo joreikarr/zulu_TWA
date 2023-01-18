@@ -117,7 +117,7 @@
       tg.MainButton.text = "Додати замовлення";
      
       tg.MainButton.show().onClick(function(){
-        var d = new Date(Date.parse(document.getElementById('deadline').value))
+        var MyDate = new Date(Date.parse(document.getElementById('deadline').value))
         let date = ('0' + MyDate.getDate()).slice(-2) + '-'
              + ('0' + (MyDate.getMonth()+1)).slice(-2) + '-'
              + MyDate.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();;

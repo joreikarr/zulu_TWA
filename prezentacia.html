@@ -73,9 +73,12 @@
         <br>
         <input type="text" id = "type" placeholder="Тема роботи" class="form-control">
         <br>
+        <input type="datetime-local" id = "deadline" class="form-control">
+        <br>
         <label>Вкажіть інші деталі замовлення (додаткова інформція)</label>
         <textarea type="text" id = "comment" class="form-control" style="height: 200px;"></textarea>
         <br>
+        
         <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
         <br>
         <input type="text" id = "sliders" placeholder="Кількість слайдів" class="form-control">
@@ -91,6 +94,9 @@
       tg.MainButton.text = "Додати замовлення";
       
       tg.MainButton.show().onClick(function(){
+        var d = new Date(Date.parse(document.getElementById('deadline').value))
+        let date = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+d.getHours() + ":" + d.getMinutes();
         var e = document.getElementById("spec");
         var text = e.options[e.selectedIndex].text;
         let res = document.getElementById('work_type').innerHTML + '*' +
@@ -98,6 +104,7 @@
       text + '*'+
       document.getElementById('subject_name').value + '*'+
       document.getElementById('type').value + '*'+
+      date + '*'+
       document.getElementById('comment').value + '*'+
       document.getElementById('price').value + '*'+
       document.getElementById('sliders').value;

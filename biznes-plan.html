@@ -7,66 +7,70 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+    <style>
+
+      .multiselect__list {
+        display: none;
+        border: 1px solid black;
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .show {
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+        gap: 10px;
+      }
+
+      .multiselect__label {
+        display: flex;
+      }
+
+      .multiselect__text {
+        margin: 0;
+        margin-left: 10px;
+      }
+
+      .multiselect__trigger {
+        padding: 10px;
+        width: 100%;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      }
+      /* Hour */
+      input[type=time]::-webkit-datetime-edit-hour-field {
+        background-color: #f2f4f5;
+        border-radius: 15%;
+        padding: 19px 13px;
+      }
+      /* Minute */
+      input[type=time]::-webkit-datetime-edit-minute-field {
+        background-color: #f2f4f5;
+        border-radius: 15%;
+        padding: 19px 13px;
+      }
+    </style>
     <title>Нове замовлення</title>
   </head>
   <body>
 
 
     <div class="contaiter m-5">
-      <h2 id = "work_type">Бізнес-план</h2>
-      <form>
-        <input type="text" id = "number" placeholder="Номер замовлення" class="form-control">
+      <h2 id = "work_type">Бізнес-план</h1>
+        <form>
+          <input type="text" id = "number" placeholder="Номер замовлення" class="form-control">
         <br>
-        <select id = "spec" placeholder="Спеціалізація" class="form-control">
-          <option>Іноземні мови</option>
-          <option>Право</option>
-          <option>Хімія</option>
-          <option>Фізика</option>
-          <option>Програмування/інформатика</option>
-          <option>Психологія</option>
-          <option>Менеджмент</option>
-          <option>Маркетинг</option>
-          <option>Вся математика</option>
-          <option>Філософія/логіка</option>
-          <option>Статистика</option>
-          <option>Вся економіка</option>
-          <option>Фінанси/банківська справа/страхування</option>
-          <option>Біологія/медицина/фармація</option>
-          <option>Бух. облік/оподаткування/аудит</option>
-          <option>Публічне управління та адміністрування</option>
-          <option>Правки в чужу роботу</option>
-          <option>Підвищення унікальності</option>
-          <option>Укр. мова/філологія/зарубіжна література</option>
-          <option>Історія</option>
-          <option>Журналістика</option>
-          <option>Міжнародні відносини/політологія</option>
-          <option>Креслення</option>
-          <option>Астрономія</option>
-          <option>Логістика</option>
-          <option>Харчові технології</option>
-          <option>Військові дисципліни</option>
-          <option>Фізичне виховання/реабілітація</option>
-          <option>Релігія</option>
-          <option>Туризм/географія/готельно-ресторанна справа</option>
-          <option>Екологія/природознавство</option>
-          <option>Геодезія/землеустрій/картографія</option>
-          <option>Геологія/гідравліка/мінерали</option>
-          <option>Соціологія</option>
-          <option>Аграрний профіль</option>
-          <option>Бізнес-плани</option>
-          <option>Музика/мистецтво/культура</option>
-          <option>Теор. механіка/прикладна механіка</option>
-          <option>Електротехніка/теплотехніка/термодинаміка/електродинаміка</option>
-          <option>Електрика/електроніка/схемотехніка</option>
-          <option>Машинобудівні/металургія/будівництва</option>
-          <option>Інші технічні спеціальності</option>
-          <option>Реклама/зв'язки із громадськістю/HR-діяльність</option>
-          <option>Товарознавство</option>
-          <option>Бібліографія/музеєзнавство/видавнича справа'</option>
-          <option>Педагогіка, дошкільна освіта</option>
-
-          </select>
+        
+    <div class="multiselect">
+      <p class="multiselect__trigger">Спеціалізація...</p>
+      <ul class="multiselect__list"></ul>
+    </div>
         <br>
         <input type="text" id = "subject_name" placeholder="Назва предмету(навчальної дисципліни)" class="form-control">
         <br>
@@ -100,7 +104,8 @@
           </select>
         <br>
         <label>Введіть дедлайн</label>
-        <input type="datetime-local" id = "deadline" class="form-control">
+        <input type="date" id="deadline-date" class="form-control">
+        <input type="time" id="deadline-time" class="form-control">
         <br>
         <label>Вкажіть інші деталі замовлення (додаткова інформація)</label>
         <textarea type="text" id = "comment" class="form-control" style="height: 200px;"></textarea>
@@ -116,24 +121,121 @@
     <script>
       let tg = window.Telegram.WebApp; 
       tg.MainButton.text = "Додати замовлення";
+            
+    let multiselect = document.querySelector(".multiselect__list");
+    let multiselectName = "something";
+    let array = [
+     'Аграрний профіль',
+     'Астрономія',
+     'Бух. облік/оподаткування/аудит',
+     'Бібліографія/музеєзнавство/видавнича справа',
+     'Бізнес-плани', 
+     'Біологія/медицина/фармація',
+     'Вся економіка',
+     'Вся математика',
+     'Військові дисципліни',
+     'Геодезія/землеустрій/картографія',
+     'Геологія/гідравліка/мінерали',
+     'Дизайн',      
+     'Екологія/природознавство',
+     'Електрика/електроніка/схемотехніка',
+     'Електротехніка/теплотехніка/термодинаміка/електродинаміка',
+     'Журналістика',
+     'Іноземні мови',
+     'Інші технічні спеціальності',
+     'Історія',
+     'Креслення',
+     'Логістика',
+     'Маркетинг',
+     'Машинобудівні/металургія/будівництва',
+     'Менеджмент',
+     'Музика/мистецтво/культура',
+     'Міжнародні відносини/політологія',
+     'Педагогіка/дошкільна освіта',
+     'Правки в чужу роботу',
+     'Право',
+     'Програмування/інформатика',
+     'Психологія',
+     'Публічне управління та адміністрування',
+     'Підвищення унікальності',
+     'Підприємництво/торгівля/біржова діяльність',      
+     "Реклама/зв'язки із громадськістю/HR-діяльність",
+     'Релігія',
+     'Соціологія',
+     'Статистика',
+     'Теор. механіка/прикладна механіка',
+     'Товарознавство',
+     'Туризм/географія/готельно-ресторанна справа',
+     'Укр. мова/філологія/зарубіжна література',
+     'Фізика', 
+     'Фізичне виховання/реабілітація',
+     'Філософія/логіка',
+     'Фінанси/банківська справа/страхування',
+     'Харчові технології',
+     'Хімія'
+    ];
+    let btn = document.querySelector(".multiselect__trigger");
+    // в значении values будут хранится активные значение    
+    let values = "";
+
+    multiselect.addEventListener("click", (e) => {
+      if (e.target.closest(".multiselect__input")) {
+        values = values.split(", ");
+        let input = e.target.closest(".multiselect__input");
+        if (!values.includes(input.value)) {
+          values.push(input.value);
+          values = values.join(", ");
+          console.log(values);
+        } else {
+          let index = values.indexOf(input.value);
+          values.splice(index, 1);
+          values = values.join(", ");
+          console.log(values);
+        }
+      }
+    });
+
+    btn.addEventListener("click", open);
+
+    function open() {
+      multiselect.classList.toggle("show");
+    }
+    for (let i = 0; i < array.length; i++) {
+      let li = document.createElement("li");
+      let input = document.createElement("input");
+      let label = document.createElement("label");
+      let p = document.createElement("p");
+      li.appendChild(label);
+      label.appendChild(input);
+      label.appendChild(p);
+      p.textContent = array[i];
+      li.classList.add("multiselect__item");
+      label.classList.add("multiselect__label");
+      p.classList.add("multiselect__text");
+      input.classList.add("multiselect__input");
+      input.type = "checkbox";
+      input.value = array[i];
+      input.name = multiselectName;
+      multiselect.appendChild(li);
+    }
       
       tg.MainButton.show().onClick(function(){
-        var d = new Date(Date.parse(document.getElementById('deadline').value))
-        let date = ('0' + d.getDate()).slice(-2) + '-'
-             + ('0' + (d.getMonth()+1)).slice(-2) + '-'
-             + d.getFullYear() + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
-        var e = document.getElementById("spec");
-        var text = e.options[e.selectedIndex].text;
+        var dt = new Date(Date.parse(document.getElementById('deadline-date').value))
+        let date = ('0' + dt.getDate()).slice(-2) + '-'
+             + ('0' + (dt.getMonth()+1)).slice(-2) + '-'
+             + dt.getFullYear() + " "
+        var tm = document.getElementById('deadline-time').value
+        let deadline = date + tm;
         let res = document.getElementById('work_type').innerHTML + '*' +
         document.getElementById('number').value + '*' +
-      text + '*'+
-      document.getElementById('subject_name').value + '*'+
-      document.getElementById('type').value + '*'+
-      document.getElementById('pages').value + '*'+
-      document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text + '*'+
-      date + '*'+
-      document.getElementById('comment').value + '*'+
-      document.getElementById('price').value;
+        values + '*' +
+        document.getElementById('subject_name').value + '*'+
+        document.getElementById('type').value + '*'+
+        document.getElementById('pages').value + '*'+
+        document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text + '*'+
+        deadline + '*'+
+        document.getElementById('comment').value + '*'+
+        document.getElementById('price').value;
       tg.sendData(res); 
         });
     </script>

@@ -1,0 +1,349 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+
+      .multiselect__list {
+        display: none;
+        border: 1px solid black;
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .show {
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+        gap: 10px;
+      }
+
+      .multiselect__label {
+        display: flex;
+      }
+
+      .multiselect__text {
+        margin: 0;
+        margin-left: 10px;
+      }
+
+      .multiselect__trigger {
+        padding: 10px;
+        width: 100%;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      }
+    </style>
+    <title>Вибір спеціалізації</title>
+  </head>
+  <body>
+
+
+    <div class="contaiter m-5">
+      <h2 id = "work_type">Оберіть ваші спеціалізації</h1>
+      <form>
+        <div class="multiselect">
+          <p class="multiselect__trigger">Спеціалізація...</p>
+          <ul class="multiselect__list"></ul>
+        </div>
+      </form>
+    </div>
+    
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+      const url = window.location.search;
+      const queryString = url.split('?')[1];
+      const urlParams = new URLSearchParams(queryString);
+      const arraymin = urlParams.get('array');
+      let splitted = arraymin?.split(',') || ""
+      let tg = window.Telegram.WebApp; 
+      tg.MainButton.text = "Відправити";
+            
+    let multiselect = document.querySelector(".multiselect__list");
+    let multiselectName = "something";
+    let array = [
+      {
+        "id":1,
+        "name":"Аграрний профіль"
+      },
+      {
+        "id":2,
+        "name":"Архітектура"
+      },
+      {
+        "id":3,
+        "name":"Астрономія"
+      },
+      {
+        "id":4,
+        "name":"Бух. облік/оподаткування/аудит"
+      },
+      {
+        "id":5, 
+        "name":"Бібліографія/музеєзнавство/видавнича справа'"
+      },
+      {
+        "id":6,
+        "name":"Бізнес-плани"
+      },
+      {
+        "id":7,
+        "name":"Біологія/медицина/фармація"
+      },
+      {
+        "id":8,
+        "name":"Вся економіка"
+      },
+      {
+        "id":9,
+        "name":"Вся математика"
+      },
+      {
+        "id":10,
+        "name":"Військові дисципліни"
+      },
+      {
+        "id":11,
+        "name":"Геодезія/землеустрій/картографія"
+      },
+      {
+        "id":12,
+        "name":"Геологія/гідравліка/мінерали"
+      },
+      {
+        "id":13,
+        "name":"Дизайн"
+      },
+      {
+        "id":14,
+        "name":"Екологія/природознавство"
+      },
+      {
+        "id":15,
+        "name":"Електрика/електроніка/схемотехніка" 
+      },
+      {
+        "id":16,
+        "name":"Електротехніка/теплотехніка/термодинаміка/електродинаміка"
+      },
+      {
+        "id":17,
+        "name":"Журналістика"
+      },
+      {
+        "id":18,
+        "name":"Іноземні мови"
+      },
+      {
+        "id":19,
+        "name":"Інші технічні спеціальності"
+      },
+      {
+        "id":20,
+        "name":"Історія"
+      },
+      {
+        "id":21,
+        "name":"Креслення"
+      },
+      {
+        "id":22,
+        "name":"Логістика"
+      },
+      {
+        "id":23,
+        "name":"Маркетинг"
+      },
+      {
+        "id":24,
+        "name":"Машинобудівні/металургія/будівництва"
+      },
+      {
+        "id":25,
+        "name":"Менеджмент"
+      },
+      {
+        "id":26,
+        "name":"Музика/мистецтво/культура"
+      },
+      {
+        "id":27,
+        "name":"Міжнародні відносини/політологія"
+      },
+      {
+        "id":28,
+        "name":"Педагогіка/дошкільна освіта"
+      },
+      {
+        "id":29,
+        "name":"Підвищення унікальності"
+      },
+      {
+        "id":30,
+        "name":"Підприємництво/торгівля/біржова діяльність"
+      },      
+      {
+        "id":31,
+        "name":"Правки в чужу роботу"
+      },
+      {
+        "id":32,
+        "name":"Право"
+      },
+      {
+        "id":33,
+        "name":"Програмування/інформатика"
+      },
+      {
+        "id":34,
+        "name":"Психологія"
+      },
+      {
+        "id":35,
+        "name":"Публічне управління та адміністрування"
+      },
+      {
+        "id":36,
+        "name":"Реклама/зв'язки із громадськістю/HR-діяльність"
+      },
+      {
+        "id":37,
+        "name":"Релігія"
+      },
+      {
+        "id":38,
+        "name":"Соціологія"
+      },
+      {
+        "id":39,
+        "name":"Статистика"
+      },
+      {
+        "id":40,
+        "name":"Теор. механіка/прикладна механіка"
+      },
+      {
+        "id":41,
+        "name":"Товарознавство"
+      },
+      {
+        "id":42,
+        "name":"Туризм/географія/готельно-ресторанна справа"
+      },
+      {
+        "id":43,
+        "name":"Укр. мова/філологія/зарубіжна література"
+      },
+      {
+        "id":44,
+        "name":"Фізика"
+      },
+      {
+        "id":45,
+        "name":"Фізичне виховання/реабілітація"
+      },
+      {
+        "id":46,
+        "name":"Філософія/логіка"
+      },
+      {
+        "id":47,
+        "name":"Фінанси/банківська справа/страхування"
+      },
+      {
+        "id":48,
+        "name":"Харчові технології"
+      },
+      {
+        "id":49,
+        "name":"Хімія"
+      }
+    ];
+    let btn = document.querySelector(".multiselect__trigger");
+    // в значении values будут хранится активные значение    
+    let values = "";
+
+    multiselect.addEventListener("click", (e) => {
+      if (e.target.closest(".multiselect__input")) {
+        values = values.split(", ");
+        let input = e.target.closest(".multiselect__input");
+        if (!values.includes(input.value)) {
+          values.push(input.value);
+          values = values.join(", ");
+          console.log(values);
+        } else {
+          let index = values.indexOf(input.value);
+          values.splice(index, 1);
+          values = values.join(", ");
+          console.log(values);
+        }
+      }
+    });
+
+    btn.addEventListener("click", open);
+
+    function open() {
+      multiselect.classList.toggle("show");
+    }
+    let olds = []
+    for (let i = 0; i < array.length; i++) {
+      let li = document.createElement("li");
+      let input = document.createElement("input");
+      if (splitted.length) {
+        for (let k = 0; k < splitted?.length; k++) {
+          if (array[i].id == splitted[k]) {
+            input.checked = true
+            if (olds.length != 0) {
+              olds = olds.split(", ")
+            }
+            let item = array.find(smt => smt.id == splitted[k])
+            olds.push(item.name)
+            olds = olds.join(", ")
+            values = olds
+            console.log(values);
+          }
+        }
+      }
+      let label = document.createElement("label");
+      let p = document.createElement("p");
+      li.appendChild(label);
+      label.appendChild(input);
+      label.appendChild(p);
+      p.textContent = array[i].name;
+      li.classList.add("multiselect__item");
+      label.classList.add("multiselect__label");
+      p.classList.add("multiselect__text");
+      input.classList.add("multiselect__input");
+      input.type = "checkbox";
+      input.value = array[i].name;
+      input.dataset.id = array[i].id
+      input.name = multiselectName;
+      multiselect.appendChild(li);
+    }
+      
+      tg.MainButton.show().onClick(function(){
+        let res = "spec*" + values;
+      tg.sendData(res); 
+        });
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

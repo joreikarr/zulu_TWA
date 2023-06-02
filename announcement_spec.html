@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+     <style>
+
+      .multiselect__list {
+        display: none;
+        border: 1px solid black;
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .show {
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+        gap: 10px;
+      }
+
+      .multiselect__label {
+        display: flex;
+      }
+
+      .multiselect__text {
+        margin: 0;
+        margin-left: 10px;
+      }
+
+      .multiselect__trigger {
+        padding: 10px;
+        width: 100%;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      }
+      /* Hour */
+      input[type=time]::-webkit-datetime-edit-hour-field {
+        background-color: #f2f4f5;
+        border-radius: 15%;
+        padding: 19px 13px;
+      }
+
+      /* Minute */
+      input[type=time]::-webkit-datetime-edit-minute-field {
+        background-color: #f2f4f5;
+        border-radius: 15%;
+        padding: 19px 13px;
+      }
+    </style>
+    <title>Нове оголошення</title>
+  </head>
+  <body>
+
+
+    <div class="contaiter m-5">
+      <h2 id = "work_type">Нове оголошення</h2>
+       <form>
+        <input type="text" id = "announcement_title" placeholder="Заголовок оголошення" class="form-control">
+        <br>
+         <label>Додайте текст оголошення</label>
+        <textarea type="text" id = "text" class="form-control" style="height: 200px;"></textarea>
+        <br>
+            <div class="multiselect">
+      <p class="multiselect__trigger">Спеціалізація...</p>
+      <ul class="multiselect__list"></ul>
+    </div>
+</form>
+</div>
+    
+    
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+      let tg = window.Telegram.WebApp; 
+      tg.MainButton.text = "Відправити оголошення";
+      
+ let multiselect = document.querySelector(".multiselect__list");
+    let multiselectName = "something";
+    let array = [
+     'Аграрний профіль',
+     'Архітектура',
+     'Астрономія',
+     'Бух. облік/оподаткування/аудит',
+     'Бібліографія/музеєзнавство/видавнича справа',
+     'Бізнес-плани', 
+     'Біологія/медицина/фармація',
+     'Вся економіка',
+     'Вся математика',
+     'Військові дисципліни',
+     'Геодезія/землеустрій/картографія',
+     'Геологія/гідравліка/мінерали',
+     'Дизайн',      
+     'Екологія/природознавство',
+     'Електрика/електроніка/схемотехніка',
+     'Електротехніка/теплотехніка/термодинаміка/електродинаміка',
+     'Журналістика',
+     'Іноземні мови',
+     'Інші технічні спеціальності',
+     'Історія',
+     'Креслення',
+     'Логістика',
+     'Маркетинг',
+     'Машинобудівні/металургія/будівництва',
+     'Менеджмент',
+     'Музика/мистецтво/культура',
+     'Міжнародні відносини/політологія',
+     'Педагогіка/дошкільна освіта',
+     'Підвищення унікальності',
+     'Підприємництво/торгівля/біржова діяльність',      
+     'Правки в чужу роботу',
+     'Право',
+     'Програмування/інформатика',
+     'Психологія',
+     'Публічне управління та адміністрування',
+     "Реклама/зв'язки із громадськістю/HR-діяльність",
+     'Релігія',
+     'Соціологія',
+     'Статистика',
+     'Теор. механіка/прикладна механіка',
+     'Товарознавство',
+     'Туризм/географія/готельно-ресторанна справа',
+     'Укр. мова/філологія/зарубіжна література',
+     'Фізика', 
+     'Фізичне виховання/реабілітація',
+     'Філософія/логіка',
+     'Фінанси/банківська справа/страхування',
+     'Харчові технології',
+     'Хімія'
+    ];
+    let btn = document.querySelector(".multiselect__trigger");
+    // в значении values будут хранится активные значение    
+    let values = "";
+
+    multiselect.addEventListener("click", (e) => {
+      if (e.target.closest(".multiselect__input")) {
+        values = values.split(", ");
+        let input = e.target.closest(".multiselect__input");
+        if (!values.includes(input.value)) {
+          values.push(input.value);
+          values = values.join(", ");
+          console.log(values);
+        } else {
+          let index = values.indexOf(input.value);
+          values.splice(index, 1);
+          values = values.join(", ");
+          console.log(values);
+        }
+      }
+    });
+
+    btn.addEventListener("click", open);
+
+    function open() {
+      multiselect.classList.toggle("show");
+    }
+    for (let i = 0; i < array.length; i++) {
+      let li = document.createElement("li");
+      let input = document.createElement("input");
+      let label = document.createElement("label");
+      let p = document.createElement("p");
+      li.appendChild(label);
+      label.appendChild(input);
+      label.appendChild(p);
+      p.textContent = array[i];
+      li.classList.add("multiselect__item");
+      label.classList.add("multiselect__label");
+      p.classList.add("multiselect__text");
+      input.classList.add("multiselect__input");
+      input.type = "checkbox";
+      input.value = array[i];
+      input.name = multiselectName;
+      multiselect.appendChild(li);
+    }
+      
+      tg.MainButton.show().onClick(function(){
+        let res = "announcement*"+ values + '*' +document.getElementById('announcement_title').value + '*'+document.getElementById('text').value;
+      tg.sendData(res); 
+        });
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -183,7 +183,7 @@
     }
       
       tg.MainButton.show().onClick(function(){
-        let res = "announcement_spec*"+ document.getElementById('announcement_title').value + '*'+document.getElementById('text').value + '*' + values;
+        let res = "announcement_spec*" + values + '*' + document.getElementById('announcement_title').value + '*'+document.getElementById('text').value;
       tg.sendData(res); 
         });
     </script>

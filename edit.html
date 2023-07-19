@@ -385,19 +385,24 @@
     }
       
       tg.MainButton.show().onClick(function(){
+        console.log("1");
          var dt = new Date(Date.parse(document.getElementById('deadline-date').value));
+        console.log("2");
         let date = ('0' + dt.getDate()).slice(-2) + '-'
              + ('0' + (dt.getMonth()+1)).slice(-2) + '-'
              + dt.getFullYear() + " ";
+        console.log("3");
         var tm = document.getElementById('deadline-time').value;
+        console.log("4");
         let deadline = date + tm;
-
+      console.log("5");
         let res = "edit*" + values+"*"+
          document.getElementById('pages').value + '*'+
           document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text + '*'+
           deadline + '*'+
         document.getElementById('comment').value + '*'+
         document.getElementById('price').value;
+        console.log("6");
       tg.sendData(res); 
         });
     </script>

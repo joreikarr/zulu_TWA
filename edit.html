@@ -116,6 +116,7 @@
       const queryString = url.split('?')[1];
       const urlParams = new URLSearchParams(queryString);
       const orderID = urlParams.get('order_id');
+      console.log(orderID);
       const arraymin = urlParams.get('array');
       let splitted = arraymin?.split(',') || ""
       let tg = window.Telegram.WebApp; 
@@ -391,7 +392,7 @@
              + dt.getFullYear() + " ";
         var tm = document.getElementById('deadline-time').value;
         let deadline = date + tm;
-        let res = "edit*" + orderID + values+"*"+
+        let res = "edit*" + orderID + "*" + values+"*"+
          document.getElementById('pages').value + '*'+
           document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text + '*'+
           deadline + '*'+

@@ -212,7 +212,10 @@
         document.getElementById('comment').value + '*' +
         document.getElementById('price').value  + '*' +
         document.getElementById('sliders').value;
-      tg.sendData(res); 
+        if (res.indexOf('**') === -1)
+      {
+        tg.sendData(res); 
+      }
         });
     </script>
 

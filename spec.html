@@ -336,7 +336,10 @@
       
       tg.MainButton.show().onClick(function(){
         let res = "spec*" + values;
-      tg.sendData(res); 
+        if (res.indexOf('**') === -1)
+      {
+        tg.sendData(res); 
+      }
         });
     </script>
 

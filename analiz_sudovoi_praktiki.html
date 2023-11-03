@@ -218,6 +218,7 @@
     }
       
       tg.MainButton.show().onClick(function(){
+
         var dt = new Date(Date.parse(document.getElementById('deadline-date').value))
         let date = ('0' + dt.getDate()).slice(-2) + '-'
              + ('0' + (dt.getMonth()+1)).slice(-2) + '-'
@@ -234,7 +235,11 @@
         deadline + '*'+
         document.getElementById('comment').value + '*'+
         document.getElementById('price').value;
-      tg.sendData(res); 
+      if (res.indexOf('**') === -1)
+      {
+        tg.sendData(res); 
+      }
+      
         });
     </script>
 

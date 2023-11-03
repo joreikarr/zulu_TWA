@@ -235,7 +235,10 @@
         deadline + '*'+
         document.getElementById('comment').value + '*'+
         document.getElementById('price').value;
-      tg.sendData(res); 
+        if (res.indexOf('**') === -1)
+      {
+        tg.sendData(res); 
+      }
         });
     </script>
 

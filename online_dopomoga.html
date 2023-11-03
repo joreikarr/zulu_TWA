@@ -214,7 +214,10 @@
         document.getElementById('price').value + '*'+
         document.getElementById('help_type').value + '*'+
         document.getElementById('help_time').value;
-      tg.sendData(res); 
+        if (res.indexOf('**') === -1)
+      {
+        tg.sendData(res); 
+      }
         });
     </script>
 

@@ -85,8 +85,6 @@
         <br>
         <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
         <br>
-        <input type="text" id = "help_type" placeholder="Яка потрібна допомога" class="form-control">
-        <br>
         <input type="text" id = "help_time" placeholder="Час допомоги" class="form-control">
         <br>
 </form>
@@ -212,7 +210,6 @@
         deadline + '*'+
         document.getElementById('comment').value + '*'+
         document.getElementById('price').value + '*'+
-        document.getElementById('help_type').value + '*'+
         document.getElementById('help_time').value;
         if (res.indexOf('**') === -1)
       {

@@ -242,6 +242,11 @@
       }
         });
     </script>
+    <script>
+  document.getElementById('number').addEventListener('input', function() {
+    this.value = this.value.replace(/\s+/g, ''); // Убираем все пробелы
+  });
+</script>
 
 
 

@@ -195,27 +195,41 @@
       multiselect.appendChild(li);
     }
       
-      tg.MainButton.show().onClick(function(){
-        var dt = new Date(Date.parse(document.getElementById('deadline-date').value))
-        let date = ('0' + dt.getDate()).slice(-2) + '-'
-             + ('0' + (dt.getMonth()+1)).slice(-2) + '-'
-             + dt.getFullYear() + " "
-        var tm = document.getElementById('deadline-time').value
-        let deadline = date + tm;
-        let res = document.getElementById('work_type').innerHTML + '*' +
-        document.getElementById('number').value + '*' +
-        values + '*' +
-        document.getElementById('subject_name').value + '*'+
-        document.getElementById('type').value + '*'+
-        deadline + '*'+
-        document.getElementById('comment').value + '*'+
-        document.getElementById('price').value + '*'+
-        document.getElementById('help_time').value;
-        if (res.indexOf('**') === -1)
-      {
-        tg.sendData(res); 
-      }
-        });
+      tg.MainButton.show().onClick(function() {
+    var dt = new Date(Date.parse(document.getElementById('deadline-date').value));
+    let date = ('0' + dt.getDate()).slice(-2) + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2) + '-'
+        + dt.getFullYear() + " ";
+    var tm = document.getElementById('deadline-time').value;
+    let deadline = date + tm;
+
+    // Собираем значения полей
+    let workType = document.getElementById('work_type').innerHTML;
+    let number = document.getElementById('number').value;
+    let subjectName = document.getElementById('subject_name').value;
+    let type = document.getElementById('type').value;
+    let comment = document.getElementById('comment').value;
+    let price = document.getElementById('price').value;
+    let helpTime = document.getElementById('help_time').value;
+
+    // Проверка на заполненность всех полей
+    let fields = [workType, number, values, subjectName, type, deadline, comment, price, helpTime];
+    let allFieldsFilled = fields.every(field => field && field.trim() !== '');
+
+    if (allFieldsFilled) {
+        // Формируем строку результата
+        let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
+            + type + '*' + deadline + '*' + comment + '*' + price + '*' + helpTime;
+
+        // Проверяем, содержит ли результат '**'
+        if (res.indexOf('**') === -1) {
+            tg.sendData(res);
+        }
+    } else {
+        console.log('Пожалуйста, заполните все поля.');
+    }
+});
+
     </script>
     <script>
   document.getElementById('number').addEventListener('input', function() {

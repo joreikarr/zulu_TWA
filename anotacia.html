@@ -220,28 +220,40 @@
       multiselect.appendChild(li);
     }
       
-      tg.MainButton.show().onClick(function(){
-        var dt = new Date(Date.parse(document.getElementById('deadline-date').value))
-        let date = ('0' + dt.getDate()).slice(-2) + '-'
-             + ('0' + (dt.getMonth()+1)).slice(-2) + '-'
-             + dt.getFullYear() + " "
-        var tm = document.getElementById('deadline-time').value
-        let deadline = date + tm;
-        let res = document.getElementById('work_type').innerHTML + '*' +
-        document.getElementById('number').value + '*' +
-        values + '*' +
-        document.getElementById('subject_name').value + '*'+
-        document.getElementById('type').value + '*'+
-        document.getElementById('pages').value + '*'+
-        document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text + '*'+
-        deadline + '*'+
-        document.getElementById('comment').value + '*'+
-        document.getElementById('price').value;
-        if (res.indexOf('**') === -1)
-      {
-        tg.sendData(res); 
-      }
-        });
+     tg.MainButton.show().onClick(function() {
+    var dt = new Date(Date.parse(document.getElementById('deadline-date').value));
+    let date = ('0' + dt.getDate()).slice(-2) + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2) + '-'
+        + dt.getFullYear() + " ";
+    var tm = document.getElementById('deadline-time').value;
+    let deadline = date + tm;
+
+    // Собираем значения полей
+    let workType = document.getElementById('work_type').innerHTML;
+    let number = document.getElementById('number').value;
+    let subjectName = document.getElementById('subject_name').value;
+    let type = document.getElementById('type').value;
+    let pages = document.getElementById('pages').value;
+    let unique = document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text;
+    let comment = document.getElementById('comment').value;
+    let price = document.getElementById('price').value;
+
+    // Проверяем, что все необходимые поля не пустые
+    if (
+        workType.trim() && number.trim() && values && subjectName.trim() &&
+        type.trim() && pages.trim() && unique.trim() && deadline.trim() &&
+        comment.trim() && price.trim()
+    ) {
+        // Формируем результат
+        let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
+            + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price;
+
+        tg.sendData(res);
+    } else {
+        console.log('Одно или несколько полей не заполнены');
+    }
+});
+
     </script>
     <script>
   document.getElementById('number').addEventListener('input', function() {

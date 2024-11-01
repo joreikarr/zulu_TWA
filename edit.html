@@ -403,15 +403,12 @@
     let fields = [orderID, values, pages, unique, deadline, comment, price];
     let allFieldsFilled = fields.every(field => field && field.trim() !== '');
 
-    if (allFieldsFilled) {
-        // Формируем результат
+   
         let res = "edit*" + orderID + "*" + values + "*"
             + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price;
 
         tg.sendData(res);
-    } else {
-        console.log('Одно или несколько полей не заполнены');
-    }
+   
 });
 
     </script>

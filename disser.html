@@ -314,23 +314,26 @@ loadBuyers();
     let unique = document.getElementById('unique').options[document.getElementById('unique').selectedIndex].text;
     let comment = document.getElementById('comment').value;
     let price = document.getElementById('price').value;
+    let buyerInput = buyerSearchInput.value.trim();
 
-    // Проверяем, что все необходимые поля не пустые
-    let fields = [workType, number, values, subjectName, type, pages, unique, deadline, comment, price];
-    let allFieldsFilled = fields.every(field => field && field.trim() !== '');
+        // Выбираем заказчика: существующий или новый
+        let buyerId = selectedBuyer ? selectedBuyer.id : null;
+        let buyerName = selectedBuyer ? selectedBuyer.full_name : (buyerInput !== "" ? buyerInput : null);
 
-    // ...
-if (allFieldsFilled && selectedBuyer) {
-  let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
-    + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price
-    + '*' + selectedBuyer.id + '*' + selectedBuyer.full_name; // добавили заказчика
-  tg.sendData(res);
-} else {
-  console.log('Одно или несколько полей не заполнены, или заказчик не выбран');
-}
+        let fields = [workType, number, values, subjectName, type, pages, unique, deadline, comment, price];
 
+        let allFieldsFilled = fields.every(field => field && field.trim() !== '');
+        let buyerFilled = buyerName !== null;
 
-});
+        if (allFieldsFilled && buyerFilled) {
+            let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
+                + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price
+                + '*' + (buyerId || 'new') + '*' + buyerName;
+            tg.sendData(res);
+        } else {
+            console.log('Одно или несколько полей не заполнены, или заказчик не введен');
+        }
+    });
 
     </script>
     <script>

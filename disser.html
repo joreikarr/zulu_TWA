@@ -112,11 +112,12 @@
         <br>
         <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
         <br>
-<div class="multiselect" id="buyer-select-container">
-  <p class="multiselect__trigger">Виберіть замовника...</p>
+      <!-- Автокомплит покупателя -->
+<div class="multiselect" id="buyer-select-container" style="position:relative;">
   <input type="text" id="buyer-search-input" class="form-control mb-2" placeholder="Пошук замовника...">
   <ul class="multiselect__list" id="buyer-list"></ul>
 </div>
+
           <br>
 
           
@@ -183,78 +184,6 @@
      'Харчові технології',
      'Хімія'
     ];
-      let buyerListEl = document.getElementById("buyer-list");
-let buyerTrigger = document.querySelector("#buyer-select-container .multiselect__trigger");
-let buyerSearchInput = document.getElementById("buyer-search-input");
-let buyers = [];
-let selectedBuyer = null;
-
-// debounce, чтобы не дергать сервер на каждый символ
-function debounce(fn, delay) {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), delay);
-  };
-}
-
-// подгрузка покупателей с сервера
-async function loadBuyers(query = "") {
-    try {
-        const response = await fetch(`http://185.237.204.34:8000/search_buyers?query=${encodeURIComponent(query)}&limit=20`);
-        const data = await response.json();
-        buyers = data; // массив объектов {id, full_name}
-        renderBuyerList();
-    } catch (e) {
-        console.error("Error loading buyers:", e);
-    }
-}
-
-function renderBuyerList(filter = "") {
-    buyerListEl.innerHTML = "";
-    buyers
-        .filter(b => b.full_name.toLowerCase().includes(filter.toLowerCase()))
-        .forEach(b => {
-            let li = document.createElement("li");
-            li.classList.add("multiselect__item");
-
-            let label = document.createElement("label");
-            label.classList.add("multiselect__label");
-
-            let input = document.createElement("input");
-            input.type = "radio";
-            input.name = "buyer";
-            input.value = b.id;
-
-            let p = document.createElement("p");
-            p.classList.add("multiselect__text");
-            p.textContent = b.full_name;
-
-            input.addEventListener("change", () => {
-                selectedBuyer = b;
-                buyerTrigger.textContent = b.full_name;
-                buyerListEl.classList.remove("show");
-            });
-
-            label.appendChild(input);
-            label.appendChild(p);
-            li.appendChild(label);
-            buyerListEl.appendChild(li);
-        });
-}
-
-// открытие/закрытие списка
-buyerTrigger.addEventListener("click", () => {
-    buyerListEl.classList.toggle("show");
-});
-
-// поиск с дебаунсом
-buyerSearchInput.addEventListener("input", debounce(() => {
-    loadBuyers(buyerSearchInput.value);
-}, 300));
-
-// при первой загрузке показываем 10 первых
-loadBuyers();
     let btn = document.querySelector(".multiselect__trigger");
     // в значении values будут хранится активные значение    
     let values = "";
@@ -299,6 +228,74 @@ loadBuyers();
       input.name = multiselectName;
       multiselect.appendChild(li);
     }
+  // --- Автокомплит покупателей ---
+let buyerListEl = document.getElementById("buyer-list");
+let buyerSearchInput = document.getElementById("buyer-search-input");
+let selectedBuyer = null;
+let buyers = [];
+
+// debounce, чтобы не дергать сервер на каждый символ
+function debounce(fn, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
+
+// загрузка покупателей с сервера
+async function loadBuyers(query="") {
+  try {
+    const resp = await fetch(`http://185.237.204.34:8000/search_buyers?query=${encodeURIComponent(query)}&limit=50`);
+    buyers = await resp.json();
+    renderBuyerList(query);
+  } catch(e){ console.error("Error loading buyers:", e); }
+}
+
+// отрисовка списка покупателей
+function renderBuyerList(filter="") {
+  buyerListEl.innerHTML = "";
+  buyers
+    .filter(b => b.full_name.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(b => {
+      let li = document.createElement("li");
+      li.classList.add("multiselect__item");
+      let label = document.createElement("label");
+      label.classList.add("multiselect__label");
+      let input = document.createElement("input");
+      input.type = "radio";
+      input.name = "buyer";
+      input.value = b.id;
+      let p = document.createElement("p");
+      p.classList.add("multiselect__text");
+      p.textContent = b.full_name;
+
+      input.addEventListener("change", () => {
+        selectedBuyer = b;
+        buyerSearchInput.value = b.full_name;
+        buyerListEl.classList.remove("show");
+      });
+
+      label.appendChild(input);
+      label.appendChild(p);
+      li.appendChild(label);
+      buyerListEl.appendChild(li);
+    });
+}
+
+// открытие/закрытие списка
+buyerSearchInput.addEventListener("focus", () => buyerListEl.classList.add("show"));
+buyerSearchInput.addEventListener("blur", () => setTimeout(() => buyerListEl.classList.remove("show"), 200));
+
+// поиск с дебаунсом
+buyerSearchInput.addEventListener("input", debounce(() => {
+  loadBuyers(buyerSearchInput.value);
+}, 300));
+
+// при первой загрузке подгружаем пустой список
+loadBuyers();
+
+      
       
       tg.MainButton.show().onClick(function() {
     var dt = new Date(Date.parse(document.getElementById('deadline-date').value));
@@ -324,13 +321,14 @@ loadBuyers();
 
     // ...
 if (allFieldsFilled && selectedBuyer) {
-    let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
-        + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price
-        + '*' + selectedBuyer.id + ':' + selectedBuyer.full_name; // добавили заказчика
-    tg.sendData(res);
+  let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
+    + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price
+    + '*' + selectedBuyer.id + ':' + selectedBuyer.full_name; // добавили заказчика
+  tg.sendData(res);
 } else {
-    console.log('Одно или несколько полей не заполнены, или заказчик не выбран');
+  console.log('Одно или несколько полей не заполнены, или заказчик не выбран');
 }
+
 
 });
 

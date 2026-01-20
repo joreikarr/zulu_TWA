@@ -112,6 +112,13 @@
         <br>
         <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
         <br>
+          <div class="multiselect" id="buyer-select-container">
+  <p class="multiselect__trigger">Виберіть замовника...</p>
+  <ul class="multiselect__list" id="buyer-list"></ul>
+</div>
+          <br>
+
+          
 </form>
 </div>
     
@@ -175,6 +182,69 @@
      'Харчові технології',
      'Хімія'
     ];
+      let buyers = []; // сюда будем подгружать имена + id
+let selectedBuyer = null;
+
+async function loadBuyers(query = "") {
+    // В продакшене сюда ты можешь подставить вызов к своему серверу,
+    // который будет дергать Python API и отдавать JSON {id, full_name}.
+    // Для теста просто заглушка:
+    const response = await fetch(`/search_buyers?query=${encodeURIComponent(query)}`);
+    const data = await response.json();
+    buyers = data; // массив объектов {id, full_name}
+}
+
+let buyerListEl = document.getElementById("buyer-list");
+let buyerTrigger = document.querySelector("#buyer-select-container .multiselect__trigger");
+
+buyerTrigger.addEventListener("click", () => {
+    buyerListEl.classList.toggle("show");
+});
+
+function renderBuyerList(filter = "") {
+    buyerListEl.innerHTML = "";
+    buyers
+        .filter(b => b.full_name.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(b => {
+            let li = document.createElement("li");
+            li.classList.add("multiselect__item");
+            let label = document.createElement("label");
+            label.classList.add("multiselect__label");
+            let input = document.createElement("input");
+            input.type = "radio";
+            input.name = "buyer";
+            input.value = b.id;
+            let p = document.createElement("p");
+            p.classList.add("multiselect__text");
+            p.textContent = b.full_name;
+
+            input.addEventListener("change", () => {
+                selectedBuyer = b;
+                buyerTrigger.textContent = b.full_name;
+                buyerListEl.classList.remove("show");
+            });
+
+            label.appendChild(input);
+            label.appendChild(p);
+            li.appendChild(label);
+            buyerListEl.appendChild(li);
+        });
+}
+
+// простой фильтр по вводу (можно расширить)
+let buyerSearchInput = document.createElement("input");
+buyerSearchInput.placeholder = "Пошук замовника...";
+buyerSearchInput.classList.add("form-control", "mb-2");
+buyerTrigger.parentElement.insertBefore(buyerSearchInput, buyerListEl);
+
+buyerSearchInput.addEventListener("input", async () => {
+    await loadBuyers(buyerSearchInput.value);
+    renderBuyerList(buyerSearchInput.value);
+});
+
+// при открытии списка грузим первых 10
+loadBuyers().then(() => renderBuyerList());
+
     let btn = document.querySelector(".multiselect__trigger");
     // в значении values будут хранится активные значение    
     let values = "";
@@ -242,15 +312,16 @@
     let fields = [workType, number, values, subjectName, type, pages, unique, deadline, comment, price];
     let allFieldsFilled = fields.every(field => field && field.trim() !== '');
 
-    if (allFieldsFilled) {
-        // Формируем результат
-        let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
-            + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price;
+    // ...
+if (allFieldsFilled && selectedBuyer) {
+    let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
+        + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price
+        + '*' + selectedBuyer.id + ':' + selectedBuyer.full_name; // добавили заказчика
+    tg.sendData(res);
+} else {
+    console.log('Одно или несколько полей не заполнены, или заказчик не выбран');
+}
 
-        tg.sendData(res);
-    } else {
-        console.log('Одно или несколько полей не заполнены');
-    }
 });
 
     </script>

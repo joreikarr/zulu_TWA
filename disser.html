@@ -112,8 +112,9 @@
         <br>
         <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
         <br>
-          <div class="multiselect" id="buyer-select-container">
+<div class="multiselect" id="buyer-select-container">
   <p class="multiselect__trigger">Виберіть замовника...</p>
+  <input type="text" id="buyer-search-input" class="form-control mb-2" placeholder="Пошук замовника...">
   <ul class="multiselect__list" id="buyer-list"></ul>
 </div>
           <br>
@@ -182,24 +183,32 @@
      'Харчові технології',
      'Хімія'
     ];
-      let buyers = []; // сюда будем подгружать имена + id
+      let buyerListEl = document.getElementById("buyer-list");
+let buyerTrigger = document.querySelector("#buyer-select-container .multiselect__trigger");
+let buyerSearchInput = document.getElementById("buyer-search-input");
+let buyers = [];
 let selectedBuyer = null;
 
-async function loadBuyers(query = "") {
-    // В продакшене сюда ты можешь подставить вызов к своему серверу,
-    // который будет дергать Python API и отдавать JSON {id, full_name}.
-    // Для теста просто заглушка:
-    const response = await fetch(`/search_buyers?query=${encodeURIComponent(query)}`);
-    const data = await response.json();
-    buyers = data; // массив объектов {id, full_name}
+// debounce, чтобы не дергать сервер на каждый символ
+function debounce(fn, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
 }
 
-let buyerListEl = document.getElementById("buyer-list");
-let buyerTrigger = document.querySelector("#buyer-select-container .multiselect__trigger");
-
-buyerTrigger.addEventListener("click", () => {
-    buyerListEl.classList.toggle("show");
-});
+// подгрузка покупателей с сервера
+async function loadBuyers(query = "") {
+    try {
+        const response = await fetch(`http://185.237.204.34:8000/search_buyers?query=${encodeURIComponent(query)}&limit=20`);
+        const data = await response.json();
+        buyers = data; // массив объектов {id, full_name}
+        renderBuyerList();
+    } catch (e) {
+        console.error("Error loading buyers:", e);
+    }
+}
 
 function renderBuyerList(filter = "") {
     buyerListEl.innerHTML = "";
@@ -208,12 +217,15 @@ function renderBuyerList(filter = "") {
         .forEach(b => {
             let li = document.createElement("li");
             li.classList.add("multiselect__item");
+
             let label = document.createElement("label");
             label.classList.add("multiselect__label");
+
             let input = document.createElement("input");
             input.type = "radio";
             input.name = "buyer";
             input.value = b.id;
+
             let p = document.createElement("p");
             p.classList.add("multiselect__text");
             p.textContent = b.full_name;
@@ -231,20 +243,18 @@ function renderBuyerList(filter = "") {
         });
 }
 
-// простой фильтр по вводу (можно расширить)
-let buyerSearchInput = document.createElement("input");
-buyerSearchInput.placeholder = "Пошук замовника...";
-buyerSearchInput.classList.add("form-control", "mb-2");
-buyerTrigger.parentElement.insertBefore(buyerSearchInput, buyerListEl);
-
-buyerSearchInput.addEventListener("input", async () => {
-    await loadBuyers(buyerSearchInput.value);
-    renderBuyerList(buyerSearchInput.value);
+// открытие/закрытие списка
+buyerTrigger.addEventListener("click", () => {
+    buyerListEl.classList.toggle("show");
 });
 
-// при открытии списка грузим первых 10
-loadBuyers().then(() => renderBuyerList());
+// поиск с дебаунсом
+buyerSearchInput.addEventListener("input", debounce(() => {
+    loadBuyers(buyerSearchInput.value);
+}, 300));
 
+// при первой загрузке показываем 10 первых
+loadBuyers();
     let btn = document.querySelector(".multiselect__trigger");
     // в значении values будут хранится активные значение    
     let values = "";

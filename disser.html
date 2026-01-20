@@ -246,7 +246,7 @@ function debounce(fn, delay) {
 // загрузка покупателей с сервера
 async function loadBuyers(query="") {
   try {
-    const resp = await fetch(`http://185.237.204.34:8000/search_buyers?query=${encodeURIComponent(query)}&limit=50`);
+    const resp = await fetch(`https://185-237-204-34.sslip.io:8443/search_buyers?query=${encodeURIComponent(query)}&limit=50`);
     buyers = await resp.json();
     renderBuyerList(query);
   } catch(e){ console.error("Error loading buyers:", e); }

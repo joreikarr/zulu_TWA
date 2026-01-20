@@ -323,7 +323,7 @@ loadBuyers();
 if (allFieldsFilled && selectedBuyer) {
   let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
     + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price
-    + '*' + selectedBuyer.id + ':' + selectedBuyer.full_name; // добавили заказчика
+    + '*' + selectedBuyer.id + '*' + selectedBuyer.full_name; // добавили заказчика
   tg.sendData(res);
 } else {
   console.log('Одно или несколько полей не заполнены, или заказчик не выбран');

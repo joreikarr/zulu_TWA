@@ -112,6 +112,21 @@
         <br>
         <input type="text" id = "price" placeholder="Ціна (сумму або договірна)" class="form-control">
         <br>
+        <!-- Источник -->
+<label>Джерело</label>
+<select id="source" class="form-control">
+  <!-- будет заполнено из JS -->
+</select>
+<br>
+
+
+<div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" id="skip_crm">
+  <label class="form-check-label" for="skip_crm">
+    Не додавати в CRM
+  </label>
+</div>
+
               <!-- Автокомплит покупателя -->
 <div class="multiselect" id="buyer-select-container" style="position:relative;">
   <input type="text" id="buyer-search-input" class="form-control mb-2" placeholder="Пошук замовника...">
@@ -227,6 +242,39 @@
       multiselect.appendChild(li);
     }
 
+ // --- Источники ---
+  const sources = [
+    { id: 14, name: "Тік ток (реклама)" },
+    { id: 1, name: "Сайт Meta" },
+    { id: 3, name: "Рекомендація" },
+    { id: 2, name: "Сайт" },
+{ id: 4, name: "РРС-2" },
+{ id: 5, name: "Повторне звернення" },
+{ id: 12, name: "Лендінг (курсова)" },
+{ id: 13, name: "Лендіг (поточні роботи)" },
+{ id: 6, name: "Інше" },
+{ id: 7, name: "chatGPT" },
+{ id: 8, name: "Tik-Tok" },
+{ id: 9, name: "SEO" },
+{ id: 10, name: "Instagram" },
+{ id: 11, name: "Google" }
+  ];
+
+  const sourceSelect = document.getElementById("source");
+
+  sources.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s.id;      // ← в данные уйдёт ID
+    opt.textContent = s.name; // ← юзер видит название
+    sourceSelect.appendChild(opt);
+  });
+
+
+
+
+
+
+
 
     // --- Автокомплит покупателей ---
 let buyerListEl = document.getElementById("buyer-list");
@@ -314,6 +362,9 @@ loadBuyers();
     let price = document.getElementById('price').value;
     let buyerInput = buyerSearchInput.value.trim();
 
+    let sourceId = document.getElementById("source").value;
+let skipCrm = document.getElementById("skip_crm").checked ? 1 : 0;
+
     // Выбираем заказчика: существующий или новый
     let buyerId = selectedBuyer ? selectedBuyer.id : null;
     let buyerName = selectedBuyer ? selectedBuyer.full_name : (buyerInput !== "" ? buyerInput : null);
@@ -328,7 +379,8 @@ loadBuyers();
     if (allFieldsFilled && buyerFilled) {
         // Формируем результат
         let res = workType + '*' + number + '*' + values + '*' + subjectName + '*'
-            + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price + '*' + (buyerId || 'new') + '*' + buyerName;
+            + type + '*' + pages + '*' + unique + '*' + deadline + '*' + comment + '*' + price + '*' + (buyerId || 'new') + '*' + buyerName + ':' + sourceId
+    + ':' + skipCrm;
         tg.sendData(res);
     } else {
         console.log('Одно или несколько полей не заполнены, или заказчик не введен');

@@ -243,32 +243,37 @@
       multiselect.appendChild(li);
     }
 
-     // --- Источники ---
-  const sources = [
-    { id: 14, name: "Тік ток (реклама)" },
-    { id: 1, name: "Сайт Meta" },
-    { id: 3, name: "Рекомендація" },
-    { id: 2, name: "Сайт" },
-{ id: 4, name: "РРС-2" },
-{ id: 5, name: "Повторне звернення" },
-{ id: 12, name: "Лендінг (курсова)" },
-{ id: 13, name: "Лендіг (поточні роботи)" },
-{ id: 6, name: "Інше" },
-{ id: 7, name: "chatGPT" },
-{ id: 8, name: "Tik-Tok" },
-{ id: 9, name: "SEO" },
-{ id: 10, name: "Instagram" },
-{ id: 11, name: "Google" }
-  ];
+// --- Источники (с сервера) ---
+const sourceSelect = document.getElementById("source");
 
-  const sourceSelect = document.getElementById("source");
+async function loadSources() {
+  try {
+    const resp = await fetch(
+      "https://185-237-204-34.sslip.io:8443/sources"
+    );
 
-  sources.forEach(s => {
-    const opt = document.createElement("option");
-    opt.value = s.id;      // ← в данные уйдёт ID
-    opt.textContent = s.name; // ← юзер видит название
-    sourceSelect.appendChild(opt);
-  });
+    if (!resp.ok) {
+      throw new Error("Failed to load sources");
+    }
+
+    const sources = await resp.json();
+
+    sourceSelect.innerHTML = "";
+
+    sources.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s.id;        // abstract_source_id
+      opt.textContent = s.name;
+      sourceSelect.appendChild(opt);
+    });
+  } catch (e) {
+    console.error("Error loading sources:", e);
+  }
+}
+
+// грузим сразу при старте
+loadSources();
+
 
 
 

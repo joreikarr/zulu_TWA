@@ -247,7 +247,7 @@ const sourceSelect = document.getElementById("source");
 async function loadSources() {
   try {
     const resp = await fetch(
-      "https://185-237-204-34.sslip.io:8443/sources"
+      "https://zulu.quest/sources"
     );
 
     if (!resp.ok) {
@@ -297,7 +297,7 @@ function debounce(fn, delay) {
 // загрузка покупателей с сервера
 async function loadBuyers(query="") {
   try {
-    const resp = await fetch(`https://185-237-204-34.sslip.io:8443/search_buyers?query=${encodeURIComponent(query)}&limit=50`);
+    const resp = await fetch(`https://zulu.quest/search_buyers?query=${encodeURIComponent(query)}&limit=50`);
     buyers = await resp.json();
     renderBuyerList(query);
   } catch(e){ console.error("Error loading buyers:", e); }
